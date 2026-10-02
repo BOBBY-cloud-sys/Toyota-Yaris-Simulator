@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/yaris.gd" id="1_yaris"]
+[ext_resource type="PackedScene" path="res://assets/vehicles/2008_toyota_yaris_no_wheels.glb" id="2_body"]
+[ext_resource type="PackedScene" path="res://assets/vehicles/wheel.glb" id="3_wheel"]
+
+[sub_resource type="BoxShape3D" id="Shape_Body"]
+size = Vector3(1.7, 1.55, 3.8)
+
+[node name="Yaris" type="CharacterBody3D"]
+script = ExtResource("1_yaris")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.775, 0)
+shape = SubResource("Shape_Body")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Body" type="Node3D" parent="Model"]
+position = Vector3(0, 0.20, 0)
+rotation = Vector3(0, 3.141593, 0)
+scale = Vector3(1.76, 1.76, 1.76)
+
+[node name="ImportedYaris" parent="Model/Body" instance=ExtResource("2_body")]
+
+[node name="Wheels" type="Node3D" parent="Model"]
+
+[node name="FrontLeft" type="Node3D" parent="Model/Wheels"]
+position = Vector3(-0.79, 0.31, -1.15)
+
+[node name="Tire" type="Node3D" parent="Model/Wheels/FrontLeft"]
+
+[node name="WheelModel" parent="Model/Wheels/FrontLeft/Tire" instance=ExtResource("3_wheel")]
+scale = Vector3(0.34, 0.34, 0.34)
+
+[node name="FrontRight" type="Node3D" parent="Model/Wheels"]
+position = Vector3(0.79, 0.31, -1.15)
+
+[node name="Tire" type="Node3D" parent="Model/Wheels/FrontRight"]
+
+[node name="WheelModel" parent="Model/Wheels/FrontRight/Tire" instance=ExtResource("3_wheel")]
+scale = Vector3(0.34, 0.34, 0.34)
+
+[node name="RearLeft" type="Node3D" parent="Model/Wheels"]
+position = Vector3(-0.79, 0.31, 1.2)
+
+[node name="Tire" type="Node3D" parent="Model/Wheels/RearLeft"]
+
+[node name="WheelModel" parent="Model/Wheels/RearLeft/Tire" instance=ExtResource("3_wheel")]
+scale = Vector3(0.34, 0.34, 0.34)
+
+[node name="RearRight" type="Node3D" parent="Model/Wheels"]
+position = Vector3(0.79, 0.31, 1.2)
+
+[node name="Tire" type="Node3D" parent="Model/Wheels/RearRight"]
+
+[node name="WheelModel" parent="Model/Wheels/RearRight/Tire" instance=ExtResource("3_wheel")]
+scale = Vector3(0.34, 0.34, 0.34)

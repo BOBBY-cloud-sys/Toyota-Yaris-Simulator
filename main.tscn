@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://ddfa6peowcsyi"]
+
+[ext_resource type="PackedScene" path="res://scenes/yaris.tscn" id="1_yaris"]
+[ext_resource type="Script" uid="uid://j1atqbt235dg" path="res://scripts/systems/desert_world.gd" id="2_world"]
+[ext_resource type="Script" uid="uid://dgymbibw5l6eq" path="res://scripts/systems/chase_camera.gd" id="3_cam"]
+[ext_resource type="Script" uid="uid://310h0tn7h8la" path="res://scripts/systems/hud.gd" id="4_hud"]
+[ext_resource type="Script" uid="uid://ccmxxlyep7l5e" path="res://scripts/systems/game_director.gd" id="5_dir"]
+[ext_resource type="Script" uid="uid://cdrpyvn20l2ed" path="res://scripts/beat_music.gd" id="6_music"]
+[ext_resource type="Script" uid="uid://b2mcgmi7gfsqs" path="res://scripts/ui/pause_menu.gd" id="7_pause"]
+[ext_resource type="Script" uid="uid://do1y0mhf1hnyw" path="res://scripts/ui/game_over_screen.gd" id="8_over"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.24, 0.42, 0.78, 1)
+sky_horizon_color = Color(0.94, 0.76, 0.52, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.62, 0.47, 0.29, 1)
+ground_horizon_color = Color(0.86, 0.68, 0.44, 1)
+ground_curve = 0.1
+sun_angle_max = 12.0
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.93, 0.8, 0.6, 1)
+fog_density = 0.0016
+
+[node name="Main" type="Node3D" unique_id=1338186305]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2085620535]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1473019578]
+transform = Transform3D(0.83, 0, -0.56, 0.28, 0.87, 0.41, 0.48, -0.49, 0.72, 0, 40, 0)
+light_color = Color(1, 0.94, 0.82, 1)
+light_energy = 1.2
+shadow_enabled = true
+directional_shadow_max_distance = 250.0
+
+[node name="DesertWorld" type="Node3D" parent="." unique_id=1692066599]
+script = ExtResource("2_world")
+
+[node name="Yaris" parent="." unique_id=964052080 instance=ExtResource("1_yaris")]
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=730114902]
+script = ExtResource("6_music")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1161399693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 12)
+current = true
+fov = 70.0
+script = ExtResource("3_cam")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=424059847]
+script = ExtResource("4_hud")
+
+[node name="Game" type="Node" parent="." unique_id=1977151919]
+script = ExtResource("5_dir")
+
+[node name="GameOver" type="CanvasLayer" parent="." unique_id=517730291]
+script = ExtResource("8_over")
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=881204553]
+script = ExtResource("7_pause")

@@ -1,0 +1,180 @@
+[gd_scene load_steps=21 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/yaris.tscn" id="1_yaris"]
+[ext_resource type="Script" path="res://scripts/systems/chase_camera.gd" id="2_cam"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.24, 0.42, 0.78, 1)
+sky_horizon_color = Color(0.94, 0.76, 0.52, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.76, 0.6, 0.38, 1)
+ground_horizon_color = Color(0.94, 0.76, 0.52, 1)
+ground_curve = 0.1
+sun_angle_max = 12.0
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.93, 0.8, 0.6, 1)
+fog_density = 0.0016
+
+[sub_resource type="StandardMaterial3D" id="MatSand"]
+albedo_color = Color(0.87, 0.73, 0.45, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="MatAsphalt"]
+albedo_color = Color(0.24, 0.24, 0.27, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="MatMetal"]
+albedo_color = Color(0.62, 0.64, 0.68, 1)
+metallic = 0.7
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="M_Ground"]
+size = Vector3(400, 2, 400)
+
+[sub_resource type="BoxShape3D" id="S_Ground"]
+size = Vector3(400, 2, 400)
+
+[sub_resource type="BoxMesh" id="M_Ramp"]
+size = Vector3(24, 1, 26)
+
+[sub_resource type="BoxShape3D" id="S_Ramp"]
+size = Vector3(24, 1, 26)
+
+[sub_resource type="BoxMesh" id="M_Ramp2"]
+size = Vector3(20, 1, 30)
+
+[sub_resource type="BoxShape3D" id="S_Ramp2"]
+size = Vector3(20, 1, 30)
+
+[sub_resource type="BoxMesh" id="M_Hill"]
+size = Vector3(70, 2, 90)
+
+[sub_resource type="BoxShape3D" id="S_Hill"]
+size = Vector3(70, 2, 90)
+
+[sub_resource type="BoxMesh" id="M_Wall"]
+size = Vector3(1, 2, 260)
+
+[sub_resource type="BoxShape3D" id="S_Wall"]
+size = Vector3(1, 2, 260)
+
+[sub_resource type="CylinderMesh" id="M_Pole"]
+top_radius = 0.15
+bottom_radius = 0.15
+height = 4.0
+radial_segments = 10
+
+[sub_resource type="CylinderShape3D" id="S_Pole"]
+radius = 0.15
+height = 4.0
+
+[node name="PhysicsLab" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.83, 0, -0.56, 0.28, 0.87, 0.41, 0.48, -0.49, 0.72, 0, 40, 0)
+light_color = Color(1, 0.94, 0.82, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -60)
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("M_Ground")
+material_override = SubResource("MatSand")
+
+[node name="Collision" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("S_Ground")
+
+[node name="RampA" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.976, 0.218, 0, -0.218, 0.976, 0, 1, -70)
+
+[node name="Mesh" type="MeshInstance3D" parent="RampA"]
+mesh = SubResource("M_Ramp")
+material_override = SubResource("MatAsphalt")
+
+[node name="Collision" type="CollisionShape3D" parent="RampA"]
+shape = SubResource("S_Ramp")
+
+[node name="RampB" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.955, 0.296, 0, -0.296, 0.955, 26, 1.5, -140)
+
+[node name="Mesh" type="MeshInstance3D" parent="RampB"]
+mesh = SubResource("M_Ramp2")
+material_override = SubResource("MatAsphalt")
+
+[node name="Collision" type="CollisionShape3D" parent="RampB"]
+shape = SubResource("S_Ramp2")
+
+[node name="Hill" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.996, 0.09, 0, -0.09, 0.996, -45, 0, -160)
+
+[node name="Mesh" type="MeshInstance3D" parent="Hill"]
+mesh = SubResource("M_Hill")
+material_override = SubResource("MatSand")
+
+[node name="Collision" type="CollisionShape3D" parent="Hill"]
+shape = SubResource("S_Hill")
+
+[node name="WallLeft" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 1, -60)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallLeft"]
+mesh = SubResource("M_Wall")
+material_override = SubResource("MatAsphalt")
+
+[node name="Collision" type="CollisionShape3D" parent="WallLeft"]
+shape = SubResource("S_Wall")
+
+[node name="WallRight" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1, -60)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallRight"]
+mesh = SubResource("M_Wall")
+material_override = SubResource("MatAsphalt")
+
+[node name="Collision" type="CollisionShape3D" parent="WallRight"]
+shape = SubResource("S_Wall")
+
+[node name="PoleA" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2, -45)
+
+[node name="Mesh" type="MeshInstance3D" parent="PoleA"]
+mesh = SubResource("M_Pole")
+material_override = SubResource("MatMetal")
+
+[node name="Collision" type="CollisionShape3D" parent="PoleA"]
+shape = SubResource("S_Pole")
+
+[node name="PoleB" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2, -110)
+
+[node name="Mesh" type="MeshInstance3D" parent="PoleB"]
+mesh = SubResource("M_Pole")
+material_override = SubResource("MatMetal")
+
+[node name="Collision" type="CollisionShape3D" parent="PoleB"]
+shape = SubResource("S_Pole")
+
+[node name="Yaris" parent="." instance=ExtResource("1_yaris")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 30)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 42)
+current = true
+fov = 70.0
+script = ExtResource("2_cam")
+target_path = NodePath("../Yaris")
